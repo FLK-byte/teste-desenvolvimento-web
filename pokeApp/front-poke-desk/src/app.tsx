@@ -1,14 +1,13 @@
-import { BuscarAPI } from "./Components/query/query";
-import {PokemonSearch} from "./Components/InputSection";
-import { Home } from "./Pages/Home/home";
-
-
+import {Home} from "./Pages/Home/home";
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer} from "react-toastify";
 
 export function App() {
+  return(
+    <>
+      <Home />
+      <ToastContainer />
 
-
-
-  return (
-    <Home/>
-  )
+    </>
+  );
 }
