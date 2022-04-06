@@ -9,7 +9,7 @@ import CreatePokemonModal from "../createPokemonModal/index";
 import { Content } from "../../Pages/Home/style";
 import api from "../../services/api";
 import { toast } from "react-toastify";
-import { AutocompleteChangeReason, Box } from "@mui/material";
+import { AutocompleteChangeReason, Box, Button } from "@mui/material";
 
 interface Pokemon {
   Name: string;
@@ -80,11 +80,19 @@ export function PokemonsScreen() {
     );
   };
 
+  const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
+
   return (
     <>
       <Content>
         <DeletePokemonModal />
-        <CreatePokemonModal />
+        {openCreateModal && (
+          <CreatePokemonModal
+            open={true}
+            onClose={() => setOpenCreateModal(false)}
+          />
+        )}
+        <Button onClick={() => setOpenCreateModal(true)}>Criar pokemon</Button>
       </Content>
       <Box mb={2}>
         <Autocomplete
