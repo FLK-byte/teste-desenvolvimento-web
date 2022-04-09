@@ -6,12 +6,12 @@ export const Page = styled.div`
     flex-direction: column;
     align-items: center;
 `
-export const Banner = styled.div`
-    background-image: url("./src/assets/banner.png");
-    width: 30vw;
-    height: 30vh;
-    background-size : contain;
-    background-repeat: no-repeat;
+export const Banner = styled.img`
+    width: 90vw;
+    @media only screen and (min-width: 740px) {
+        max-width: 40vw;
+    }
+
 `
 export const Content = styled.div`
     display: flex;

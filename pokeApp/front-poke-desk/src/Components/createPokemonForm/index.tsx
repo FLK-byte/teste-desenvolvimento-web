@@ -2,17 +2,6 @@ import { useFormik } from 'formik';
 import { Grid, MenuItem, Select, Input, Button, InputLabel } from '@mui/material';
 import api from '../../services/api'
 
-interface PokemonSend {
-    Name: string,
-    pokedexNumber: number,
-    Type_1: string,
-    Type_2?: string,
-    STAT_TOTAL: number,
-    ATK: number,
-    DEF: number,
-    STA: number
-}
-
 export const CreatePokemonForm = (props: any) => {
     const { values, handleChange, handleSubmit, } = useFormik({
         initialValues: {
@@ -25,7 +14,7 @@ export const CreatePokemonForm = (props: any) => {
             totalStats: ""
         },
         onSubmit: values => {
-            api.post<PokemonSend>("createPokemon", {
+            api.post("createPokemon", {
                 Name: values.pokeName,
                 pokedexNumber: Number(values.PokedexNumber),
                 Type_1: values.typePokemon,

@@ -1,18 +1,9 @@
 import { useQuery } from "../../services/hook"
+import {Pokemon} from 'models/pokemon.model'
 
-interface GetPokemons {
-  Name: string,
-  Pokedex_Number: string,
-  Type_1: string,
-  Type_2: string,
-  STAT_TOTAL: string,
-  ATK: string,
-  DEF: string,
-  STA: string,
-}
 
 export function BuscarAPI() {
-  const { data, loading, refetch } = useQuery<GetPokemons[]>({ query: "pokemons" }, 1)
+  const { data, loading, refetch } = useQuery<Pokemon[]>({ query: "pokemons" }, 1)
   console.log(data)
   return (
     <div>

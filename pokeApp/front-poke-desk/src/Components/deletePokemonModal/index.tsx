@@ -1,10 +1,8 @@
-import * as React from 'react';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import { TextField, Modal } from '@mui/material';
+import { useState } from 'react';
+import { TextField, Modal, Button, Box, Grid } from '@mui/material';
 import api from '../../services/api';
-import Cards from '../cards/cards';
+import {Cards} from '../cards/cards';
+import {Pokemon} from 'models/pokemon.model'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -20,14 +18,8 @@ const style = {
   pb: 3,
 };
 
-function ChildModal(props: any) {
-  const [open, setOpen] = React.useState(false);
-  const [pokemon, setPokemon] = React.useState();
-
-  React.useEffect(() => {
-    props.pokemon ? setPokemon(props.pokemon[0]) : null
-    console.log(pokemon)
-  },[props])
+function ChildModal({Name, Pokedex_Number}: Pokemon) {
+  const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);
@@ -36,14 +28,12 @@ function ChildModal(props: any) {
     setOpen(false);
   };
   const deletarPokemon = ()=>{  
-      console.log("pokebas", pokemon)
-      api.post("deletePokemon", {pokedexNumber : pokemon.Pokedex_Number})
-
+      api.post("deletePokemon", {pokedexNumber : Pokedex_Number})
   }
 
   return (
     <>
-      <Button onClick={handleOpen} disabled={pokemon ? false : true}>Deletar</Button>
+      <Button onClick={handleOpen} disabled={Name ? false : true}>Deletar</Button>
       <Modal
         hideBackdrop
         open={open}
@@ -52,7 +42,7 @@ function ChildModal(props: any) {
         aria-describedby="child-modal-description"
       >
         <Box sx={{ ...style, width: 200 }}>
-          <h1>Deseja Deletar o pokemon {props.pokemon ? props.pokemon[0].Name : "selecionado"} ?</h1>
+          <h1>Deseja Deletar o pokemon {Name ? Name : "selecionado"} ?</h1>
           <Button onClick={()=>{handleClose(),deletarPokemon()}}>SIM</Button>
           <Button onClick={handleClose}>NÃO</Button>
         </Box>
@@ -61,16 +51,14 @@ function ChildModal(props: any) {
   );
 }
 
-export default function NestedModal() {
-  const [open, setOpen] = React.useState(false);
-  const [pokemonToSearch, setPokemonToSearch] = React.useState<string>();
-  const [loading, setLoading] = React.useState<boolean>(true)
-  const [pokemonFinded, sePokemonFinded] = React.useState<any>();
+export function DeletePokemonModal() {
+  const [open, setOpen] = useState(false);
+  const [pokemonToSearch, setPokemonToSearch] = useState<string>();
+  const [pokemonFinded, sePokemonFinded] = useState<Pokemon>();
  
-  const littleApi = async (pokemon: any) => {
+  const littleApi = async (pokemon: string) => {
     const { data } = await api.post("pokemon", { name: pokemon })
     sePokemonFinded(data)
-    setLoading(false)
   }
 
   const handleOpen = () => {
@@ -80,7 +68,7 @@ export default function NestedModal() {
     setOpen(false);
   };
   const clickButton = () => {
-    littleApi(pokemonToSearch)
+    littleApi(pokemonToSearch as string)
     console.log(pokemonFinded)
   }
   return (
@@ -100,10 +88,10 @@ export default function NestedModal() {
             <Button variant="outlined" onClick={clickButton}>Procurar pokemon</Button>
           </Grid>
           <Grid item xs={12}>
-            {loading ? <p>Procure um pokemon para deletar</p> : <Cards pokemon={pokemonFinded[0]} /> }
+            {!pokemonFinded ? <p>Procure um pokemon para deletar</p> : <Cards {...pokemonFinded}/> }
           </Grid>
           <Grid item xs={12}>
-            <ChildModal pokemon={pokemonFinded}/>
+            <ChildModal {...pokemonFinded as Pokemon}/>
           </Grid>
 
         </Grid>

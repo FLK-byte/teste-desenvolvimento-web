@@ -1,28 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import {Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, Typography, IconButton, IconButtonProps} from '@mui/material/';
+import {Pokemon} from 'models/pokemon.model'
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-interface Pokemon{
-  pokemon: {
-    Name: string,
-    Pokedex_Number: number,
-    Type_1: string,
-    Type_2: string,
-    STAT_TOTAL: string,
-    ATK: string,
-    DEF: string,
-    STA: string
-  }
-}
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -48,13 +29,8 @@ const UrlNumberPath = (PokedexNumber: number): string => {
   return `${PokedexNumber}`
 
 }
-export default function Cards(props: Pokemon) {
+export function Cards({ATK,DEF,Name,Pokedex_Number,STA,STAT_TOTAL,Type_1,Type_2}: Pokemon) {
   const [expanded, setExpanded] = React.useState(false);
-  const [pokemon, setPokemon] = React.useState<any>()
-
-  React.useEffect(() => {
-    props.pokemon ? setPokemon(props.pokemon) : setPokemon("loading")
-  }, [props])
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -63,12 +39,12 @@ export default function Cards(props: Pokemon) {
   return (
     <Card sx={{ minWidth: 215 }}>
       <CardHeader
-        title={pokemon ? pokemon.Name : "Loading"}
+        title={Name ? Name : "Loading"}
       />
       <CardMedia
         component="img"
         height="215"
-        image={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${UrlNumberPath(props.pokemon.Pokedex_Number)}.png`}
+        image={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${UrlNumberPath(Pokedex_Number)}.png`}
         alt="Pokemon"
       />
       <CardContent>
@@ -86,16 +62,16 @@ export default function Cards(props: Pokemon) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph={true}>{`Total Stats: ${props.pokemon.STAT_TOTAL} `}</Typography>
+          <Typography paragraph={true}>{`Total Stats: ${STAT_TOTAL} `}</Typography>
           <Typography>
-            {`Attack: ${props.pokemon.ATK} Deffense: ${props.pokemon.DEF} Stamina: ${props.pokemon.STA} `}
+            {`Attack: ${ATK} Deffense: ${DEF} Stamina: ${STA} `}
           </Typography>
           <Typography paragraph={true}>{`Tipos: `}</Typography>
           <Typography>
-            {`Tipo Primário: ${props.pokemon.Type_1}`}
+            {`Tipo Primário: ${Type_1}`}
           </Typography>
           <Typography>
-            {`Tipo Secundário: ${props.pokemon.Type_2}`}
+            {`Tipo Secundário: ${Type_2}`}
           </Typography>
         </CardContent>
       </Collapse>

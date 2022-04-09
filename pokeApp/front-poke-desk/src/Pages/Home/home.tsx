@@ -1,11 +1,11 @@
-import { Banner, Page, Content } from "./style";
+import { Banner, Page } from "./style";
 import { PokemonSearch } from "../../Components/InputSection"
 
 
 export function Home() {
     return (
         <Page>
-            <Banner />
-            <PokemonSearch/>
+            <Banner src="./src/assets/banner.png" />
+            <PokemonSearch />
         </Page>)
 }  

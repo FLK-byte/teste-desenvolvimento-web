@@ -1,5 +1,5 @@
-import * as React from 'react';
-import {Fade, Button, Modal, Typography, Box, Backdrop} from '@mui/material/';
+import { useState, useEffect } from 'react';
+import { Fade, Button, Modal, Box, Backdrop } from '@mui/material/';
 import { CreatePokemonForm } from '../createPokemonForm/index'
 import api from '../../services/api'
 
@@ -15,15 +15,20 @@ const style = {
   p: 4,
 };
 
-export default function TransitionsModal() {
-  const [open, setOpen] = React.useState(false);
-  const [pokedexNumber, setPokedexNumber] = React.useState();
+export function CreatePokemonModal() {
+  const [open, setOpen] = useState(false);
+  const [pokedexNumber, setPokedexNumber] = useState();
 
-  (async()=>{
-    const {data} = await api.get("pokemon")
-    setPokedexNumber(data)
-    console.log(data)
-  })()
+  useEffect(() => {
+    const call = async () => {
+      const { data } = await api.get("pokemon")
+      setPokedexNumber(data)
+      console.log(data)
+    }
+    call()
+  }, [])
+
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -43,7 +48,7 @@ export default function TransitionsModal() {
       >
         <Fade in={open}>
           <Box sx={style}>
-              <CreatePokemonForm number={pokedexNumber}/>
+            <CreatePokemonForm number={pokedexNumber} />
           </Box>
         </Fade>
       </Modal>
