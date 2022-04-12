@@ -4,13 +4,13 @@ import Pagination from '@mui/material/Pagination';
 import { Content } from "../../Pages/Home/style";
 import {Pokemon} from 'models/pokemon.model'
 
-interface pokemonsProps {
+interface IPokemonsProps {
   pokemons: Pokemon[],
   page:number,
   handleClick: (page : number)=>void
 }
 
-export const Pokemons = ({ pokemons, page, handleClick } : pokemonsProps) => {
+export const Pokemons = ({ pokemons, page, handleClick } : IPokemonsProps) => {
   const startIndex = (page - 1) * POKEMONS_PER_PAGE;
   const selectedPokemons = pokemons.slice(startIndex, startIndex + POKEMONS_PER_PAGE);
   const totalPages = Math.ceil(pokemons.length / POKEMONS_PER_PAGE)
@@ -18,7 +18,7 @@ export const Pokemons = ({ pokemons, page, handleClick } : pokemonsProps) => {
     <Content>
       {
         selectedPokemons.map((pokemon: Pokemon) => (
-          <Cards {...pokemon} />
+          <Cards pokemon={pokemon} />
         ))
       }
     </Content>

@@ -1,8 +1,10 @@
+import {useState} from 'react'
 import { useFormik } from 'formik';
 import { Grid, MenuItem, Select, Input, Button, InputLabel } from '@mui/material';
 import api from '../../services/api'
 
 export const CreatePokemonForm = (props: any) => {
+    const [pokeNumber, setPokeNumber] = useState<boolean>(true)
     const { values, handleChange, handleSubmit, } = useFormik({
         initialValues: {
             pokeName: '',
@@ -48,9 +50,9 @@ export const CreatePokemonForm = (props: any) => {
                         id="PokedexNumber"
                         name="PokedexNumber"
                         type="PokedexNumber"
-                        disabled={true}
+                        disabled={pokeNumber}
                         onChange={handleChange}
-
+                        onClick={()=>setPokeNumber(false)}
                         value={values.PokedexNumber}
                     />
                 </Grid>

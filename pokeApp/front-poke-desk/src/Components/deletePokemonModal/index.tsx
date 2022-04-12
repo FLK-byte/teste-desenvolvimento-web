@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { TextField, Modal, Button, Box, Grid } from '@mui/material';
 import api from '../../services/api';
-import {Cards} from '../cards/cards';
-import {Pokemon} from 'models/pokemon.model'
+import { Cards } from '../cards/cards';
+import { Pokemon } from 'models/pokemon.model'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -18,7 +18,7 @@ const style = {
   pb: 3,
 };
 
-function ChildModal({Name, Pokedex_Number}: Pokemon) {
+function ChildModal({ Name, Pokedex_Number }: Pokemon) {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -27,8 +27,8 @@ function ChildModal({Name, Pokedex_Number}: Pokemon) {
   const handleClose = () => {
     setOpen(false);
   };
-  const deletarPokemon = ()=>{  
-      api.post("deletePokemon", {pokedexNumber : Pokedex_Number})
+  const deletarPokemon = () => {
+    api.post("deletePokemon", { pokedexNumber: Pokedex_Number })
   }
 
   return (
@@ -43,7 +43,7 @@ function ChildModal({Name, Pokedex_Number}: Pokemon) {
       >
         <Box sx={{ ...style, width: 200 }}>
           <h1>Deseja Deletar o pokemon {Name ? Name : "selecionado"} ?</h1>
-          <Button onClick={()=>{handleClose(),deletarPokemon()}}>SIM</Button>
+          <Button onClick={() => { handleClose(), deletarPokemon() }}>SIM</Button>
           <Button onClick={handleClose}>NÃO</Button>
         </Box>
       </Modal>
@@ -54,12 +54,7 @@ function ChildModal({Name, Pokedex_Number}: Pokemon) {
 export function DeletePokemonModal() {
   const [open, setOpen] = useState(false);
   const [pokemonToSearch, setPokemonToSearch] = useState<string>();
-  const [pokemonFinded, sePokemonFinded] = useState<Pokemon>();
- 
-  const littleApi = async (pokemon: string) => {
-    const { data } = await api.post("pokemon", { name: pokemon })
-    sePokemonFinded(data)
-  }
+  const [pokemonFinded, setPokemonFinded] = useState<Pokemon>();
 
   const handleOpen = () => {
     setOpen(true);
@@ -68,8 +63,11 @@ export function DeletePokemonModal() {
     setOpen(false);
   };
   const clickButton = () => {
+    const littleApi = async (pokemon: string) => {
+      const { data } = await api.post("pokemon", { name: pokemon })
+      setPokemonFinded(data[0])  
+    }
     littleApi(pokemonToSearch as string)
-    console.log(pokemonFinded)
   }
   return (
     <>
@@ -88,12 +86,11 @@ export function DeletePokemonModal() {
             <Button variant="outlined" onClick={clickButton}>Procurar pokemon</Button>
           </Grid>
           <Grid item xs={12}>
-            {!pokemonFinded ? <p>Procure um pokemon para deletar</p> : <Cards {...pokemonFinded}/> }
+            {!pokemonFinded ? <p>Procure um pokemon para deletar</p> : <Cards pokemon={pokemonFinded} />}
           </Grid>
           <Grid item xs={12}>
-            <ChildModal {...pokemonFinded as Pokemon}/>
+            <ChildModal {...pokemonFinded as Pokemon} />
           </Grid>
-
         </Grid>
       </Modal>
     </>

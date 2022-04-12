@@ -9,6 +9,9 @@ interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
 
+interface IPokemon {
+  pokemon: Pokemon
+}
 const ExpandMore = styled((props: ExpandMoreProps) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -29,7 +32,7 @@ const UrlNumberPath = (PokedexNumber: number): string => {
   return `${PokedexNumber}`
 
 }
-export function Cards({ATK,DEF,Name,Pokedex_Number,STA,STAT_TOTAL,Type_1,Type_2}: Pokemon) {
+export function Cards({pokemon}: IPokemon) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -39,12 +42,12 @@ export function Cards({ATK,DEF,Name,Pokedex_Number,STA,STAT_TOTAL,Type_1,Type_2}
   return (
     <Card sx={{ minWidth: 215 }}>
       <CardHeader
-        title={Name ? Name : "Loading"}
+        title={pokemon.Name }
       />
       <CardMedia
         component="img"
         height="215"
-        image={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${UrlNumberPath(Pokedex_Number)}.png`}
+        image={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${UrlNumberPath(pokemon.Pokedex_Number)}.png`}
         alt="Pokemon"
       />
       <CardContent>
@@ -62,16 +65,16 @@ export function Cards({ATK,DEF,Name,Pokedex_Number,STA,STAT_TOTAL,Type_1,Type_2}
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph={true}>{`Total Stats: ${STAT_TOTAL} `}</Typography>
+          <Typography paragraph={true}>{`Total Stats: ${pokemon.STAT_TOTAL} `}</Typography>
           <Typography>
-            {`Attack: ${ATK} Deffense: ${DEF} Stamina: ${STA} `}
+            {`Attack: ${pokemon.ATK} Deffense: ${pokemon.DEF} Stamina: ${pokemon.STA} `}
           </Typography>
           <Typography paragraph={true}>{`Tipos: `}</Typography>
           <Typography>
-            {`Tipo Primário: ${Type_1}`}
+            {`Tipo Primário: ${pokemon.Type_1}`}
           </Typography>
           <Typography>
-            {`Tipo Secundário: ${Type_2}`}
+            {`Tipo Secundário: ${pokemon.Type_2}`}
           </Typography>
         </CardContent>
       </Collapse>
